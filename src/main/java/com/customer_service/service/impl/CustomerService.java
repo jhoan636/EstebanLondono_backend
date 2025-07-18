@@ -4,10 +4,11 @@ import com.customer_service.dto.CustomerDto;
 import com.customer_service.model.Customer;
 import com.customer_service.repository.ICustomerRepository;
 import com.customer_service.service.ICustomerService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,25 +36,22 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public CustomerDto getCustomerById(Long id) {
-        return null;
+        Customer customer = customerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Customer not found"));
+        return toDobject(customer);
     }
+
 
     @Override
-    public CustomerDto updateCustomerAdreess(Customer customer) {
-        return null;
+    public List<CustomerDto> findAllCustomersDateAfter(LocalDateTime date) {
+        List<Customer> customers = customerRepository.findByCreateDateOrderByCreateDate(date);
+        List<CustomerDto> dtos = new ArrayList<>();
+        for (Customer customer : customers) {
+            dtos.add(toDobject(customer));
+        }
+        return dtos;
     }
 
-    @Override
-    public void deleteCustomer(Long id) {
-
-    }
-
-    @Override
-    public List<CustomerDto> findAllCustomersDateAfter() {
-        return List.of();
-    }
-
-    private CustomerDto toDobject(Customer customer){
+    private CustomerDto toDobject(Customer customer) {
         CustomerDto dto = new CustomerDto();
         dto.setCreateDate(customer.getCreateDate());
         dto.setEmail(customer.getEmail());
