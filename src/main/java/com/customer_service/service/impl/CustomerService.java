@@ -1,0 +1,65 @@
+package com.customer_service.service.impl;
+
+import com.customer_service.dto.CustomerDto;
+import com.customer_service.model.Customer;
+import com.customer_service.repository.ICustomerRepository;
+import com.customer_service.service.ICustomerService;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+public class CustomerService implements ICustomerService {
+
+    private final ICustomerRepository customerRepository;
+
+    public CustomerService(ICustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
+
+    @Override
+    public CustomerDto createClient(CustomerDto customer) {
+        customer.setCreateDate(LocalDateTime.now());
+        Customer entity = new Customer();
+        entity.setCreateDate(customer.getCreateDate());
+        entity.setEmail(customer.getEmail());
+        entity.setFirstName(customer.getFirstName());
+        entity.setLastName(customer.getLastName());
+        entity.setLastUpdate(customer.getLastUpdate());
+        Customer client = customerRepository.save(entity);
+        System.out.println(customerRepository.findAll());
+        return toDobject(client);
+    }
+
+    @Override
+    public CustomerDto getCustomerById(Long id) {
+        return null;
+    }
+
+    @Override
+    public CustomerDto updateCustomerAdreess(Customer customer) {
+        return null;
+    }
+
+    @Override
+    public void deleteCustomer(Long id) {
+
+    }
+
+    @Override
+    public List<CustomerDto> findAllCustomersDateAfter() {
+        return List.of();
+    }
+
+    private CustomerDto toDobject(Customer customer){
+        CustomerDto dto = new CustomerDto();
+        dto.setCreateDate(customer.getCreateDate());
+        dto.setEmail(customer.getEmail());
+        dto.setFirstName(customer.getFirstName());
+        dto.setLastName(customer.getLastName());
+        dto.setLastUpdate(customer.getLastUpdate());
+        return dto;
+    }
+}
