@@ -5,10 +5,13 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
 @Table(name = "customer")
+@Data
 public class Customer {
 
     @Id
@@ -16,11 +19,10 @@ public class Customer {
     private Long id;
 
     @Column(name = "create_date")
-    private Date createDate;
+    private LocalDateTime createDate;
 
     @Column(name = "last_update")
-    @NotBlank
-    private Date lastUpdate;
+    private LocalDateTime lastUpdate;
 
     @Column(name = "firstName")
     @NotBlank
